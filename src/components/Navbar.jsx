@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { FiMenu, FiX } from "react-icons/fi"; 
 import "../styles/Navbar.css";
 
 const navItems = [
   { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
   { name: "Services", href: "#services" },
+  { name: "About Me", href: "#about" },
 ];
 
 export default function Navbar() {
   const [hoveredPath, setHoveredPath] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <motion.nav 
@@ -18,38 +20,51 @@ export default function Navbar() {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className="navbar"
     >
+      {/* Left Logo */}
       <div className="logo">
         Mritunjay<span>Narayan</span>
       </div>
 
-      <ul className="nav-links">
+      {/* Middle Links with Sliding Hover Effect */}
+      <ul className={`nav-links ${menuOpen ? "nav-active" : ""}`}>
         {navItems.map((item) => (
           <li 
             key={item.name}
             onMouseEnter={() => setHoveredPath(item.name)}
             onMouseLeave={() => setHoveredPath(null)}
+            onClick={() => setMenuOpen(false)}
           >
             <a href={item.href}>
-              {item.name}
-              {/* Sliding Highlight Effect */}
+              <span className="nav-text">{item.name}</span>
+              {/* Framer Motion Shared Layout Animation */}
               {hoveredPath === item.name && (
                 <motion.div
                   layoutId="nav-highlight"
                   className="nav-highlight"
-                  transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
+                  initial={false}
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
               )}
             </a>
           </li>
         ))}
-        
-        {/* Professional Magnetic CTA */}
-        <motion.li whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <a href="#contact" className="nav-cta">
-            Contact Me
-          </a>
-        </motion.li>
       </ul>
+
+      {/* Right Section */}
+      <div className="nav-right">
+        <motion.a 
+          href="#mentorship" 
+          className="nav-cta desktop-only"
+          whileHover={{ scale: 1.05 }} 
+          whileTap={{ scale: 0.95 }}
+        >
+          Mentorship?
+        </motion.a>
+        
+        <div className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
+          {menuOpen ? <FiX /> : <FiMenu />}
+        </div>
+      </div>
     </motion.nav>
   );
 }

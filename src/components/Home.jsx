@@ -1,113 +1,161 @@
 import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import "../styles/Home.css";
 
-// 5 Images Import
+// Assets (Replace with your paths)
 import img1 from "../images/img1.jpg";
 import img2 from "../images/img2.jpg";
-import img3 from "../images/img3.jpg";
-import img4 from "../images/img4.jpg";
-import img5 from "../images/img5.jpg";
+import strategyImg from "../images/strategy.jpg"; 
+import brandingImg from "../images/branding.jpg";
+import viralImg from "../images/viral.jpg";
+import conversionImg from "../images/conversion.jpg";
 
 export default function Home() {
   const [currentImg, setCurrentImg] = useState(0);
-  const images = [img1, img2, img3, img4, img5];
+  const heroImages = [img1, img2]; // Add all images here
 
-  // Hero Logic: No change in transition behavior
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImg((prev) => (prev + 1) % images.length);
-    }, 4000);
+      setCurrentImg((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
     return () => clearInterval(interval);
-  }, [images.length]);
+  }, [heroImages.length]);
 
-  // Scroll Reveal Logic
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.classList.add("show");
-      });
-    }, { threshold: 0.1 });
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2, delayChildren: 0.3 }
+    }
+  };
 
-    document.querySelectorAll(".animate-on-scroll").forEach((el) => observer.observe(el));
-  }, []);
+  const itemVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
+    }
+  };
 
   return (
-    <div className="webveda-style">
+    <div className="zara-container">
       {/* --- HERO SECTION --- */}
-      <section className="hero-section">
-        <div className="hero-slider-container">
-          {images.map((img, index) => (
-            <div
-              key={index}
-              className={`bg-slide ${index === currentImg ? "active" : ""}`}
-              style={{ backgroundImage: `url(${img})` }}
-            ></div>
-          ))}
-          <div className="hero-overlay"></div>
+      <section className="zara-hero">
+        <div className="hero-bg-wrapper">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentImg}
+              initial={{ scale: 1.1, opacity: 0 }}
+              animate={{ scale: 1, opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 2, ease: "easeInOut" }}
+              className="hero-bg"
+              style={{ backgroundImage: `url(${heroImages[currentImg]})` }}
+            />
+          </AnimatePresence>
         </div>
 
-        <div className="hero-container animate-on-scroll">
-          <h1>THE NEW<br /><span className="text-gradient">STANDARD</span></h1>
-          <p>
-            Architecting high-performance digital ecosystems that command authority 
-            and dominate market share.
-          </p>
-          <div className="hero-btns">
-            <button className="main-btn">Evolve Your Brand</button>
-          </div>
-        </div>
+        <motion.div 
+          className="hero-content"
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+        >
+          <motion.span className="zara-eyebrow" variants={itemVariants}>
+            ESTABLISHED MMXXV
+          </motion.span>
+          <motion.h1 className="zara-title" variants={itemVariants}>
+            THE RED <br /><span className="outline-text">STANDARD</span>
+          </motion.h1>
+          <motion.div className="hero-actions" variants={itemVariants}>
+            <button className="zara-btn primary">START PROJECT</button>
+            <button className="zara-btn">EXPLORE WORK</button>
+          </motion.div>
+        </motion.div>
       </section>
 
-      {/* --- STATS STRIP --- */}
-      <section className="stats-strip animate-on-scroll">
-        <div className="stat-item">
-          <h2>250K</h2>
-          <p style={{color: '#666', fontSize: '0.7rem', fontWeight: 800, letterSpacing: '2px'}}>STUDENTS</p>
-        </div>
-        <div className="stat-item">
-          <h2>$15M</h2>
-          <p style={{color: '#666', fontSize: '0.7rem', fontWeight: 800, letterSpacing: '2px'}}>AD SPEND</p>
-        </div>
-        <div className="stat-item">
-          <h2>100+</h2>
-          <p style={{color: '#666', fontSize: '0.7rem', fontWeight: 800, letterSpacing: '2px'}}>GLOBAL BRANDS</p>
-        </div>
+      {/* --- BENTO GRID SECTION --- */}
+      <section className="zara-grid-section">
+        <motion.div 
+          className="zara-grid"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={containerVariants}
+        >
+          {/* Card 1: Large Strategy */}
+          <motion.div variants={itemVariants} className="zara-card card-lg">
+            <div className="card-image" style={{ backgroundImage: `url(${strategyImg})` }}></div>
+            <div className="card-overlay"></div>
+            <div className="card-info">
+              <span className="tag">01 / PERFORMANCE</span>
+              <h3>Revenue Systems</h3>
+              <p>Scalable infrastructure for high-growth digital brands.</p>
+            </div>
+          </motion.div>
+
+          {/* Card 2: Tall Branding */}
+          <motion.div variants={itemVariants} className="zara-card card-tall">
+            <div className="card-image" style={{ backgroundImage: `url(${brandingImg})` }}></div>
+            <div className="card-overlay"></div>
+            <div className="card-info">
+              <span className="tag">02 / IDENTITY</span>
+              <h3>Visual Identity</h3>
+              <p>Crafting brands that command premium pricing.</p>
+            </div>
+          </motion.div>
+
+          {/* Card 3: Viral Sq */}
+          <motion.div variants={itemVariants} className="zara-card card-sq">
+            <div className="card-image" style={{ backgroundImage: `url(${viralImg})` }}></div>
+            <div className="card-overlay"></div>
+            <div className="card-info">
+              <span className="tag">03 / ORGANIC</span>
+              <h3>Viral Loop</h3>
+            </div>
+          </motion.div>
+
+          {/* Card 4: CTA Red */}
+          <motion.div variants={itemVariants} className="zara-card card-cta-red">
+            <div className="card-info">
+              <h2 style={{ fontSize: '1.5rem', marginBottom: '15px' }}>READY TO EVOLVE?</h2>
+              <button className="zara-btn" style={{ background: 'white', color: 'black' }}>
+                APPLY NOW
+              </button>
+            </div>
+          </motion.div>
+
+          {/* Card 5: Wide Conversion */}
+          <motion.div variants={itemVariants} className="zara-card card-wide">
+            <div className="card-image" style={{ backgroundImage: `url(${conversionImg})` }}></div>
+            <div className="card-overlay"></div>
+            <div className="card-info">
+              <span className="tag">04 / OPTIMIZATION</span>
+              <h3>Smart Funnels</h3>
+            </div>
+          </motion.div>
+        </motion.div>
       </section>
 
-      {/* --- SHATTERED BENTO GRID --- */}
-      <section className="grid-section">
-        <div className="web-grid">
-          <div className="glass card-large animate-on-scroll">
-            <h3 style={{fontSize: '2.5rem', lineHeight: '1'}}>Performance Systems</h3>
-            <p style={{color: 'var(--text-dim)', marginTop: '15px'}}>ROI-driven acquisition that prioritizes profit over vanity metrics.</p>
-          </div>
-          
-          <div className="glass card-tall animate-on-scroll" style={{transitionDelay: '0.1s'}}>
-            <h3 style={{fontSize: '2.5rem', lineHeight: '1'}}>Personal Authority</h3>
-            <p style={{color: 'var(--text-dim)', marginTop: '15px'}}>Transforming founders into category leaders.</p>
-          </div>
-
-          <div className="glass card-square animate-on-scroll" style={{transitionDelay: '0.2s'}}>
-            <h3 style={{fontSize: '1.5rem'}}>Viral Strategy</h3>
-            <p style={{color: 'var(--text-dim)', marginTop: '10px'}}>The proven hook process for organic dominance.</p>
-          </div>
-
-          <div className="glass card-wide animate-on-scroll" style={{transitionDelay: '0.3s'}}>
-             <h3 style={{fontSize: '1.5rem'}}>Conversion Tech</h3>
-             <p style={{color: 'var(--text-dim)', marginTop: '10px'}}>Smart funnels built for 24/7 acquisition.</p>
-          </div>
-
-          <div className="glass card-cta animate-on-scroll" style={{transitionDelay: '0.4s'}}>
-             <h3 style={{color: '#000', fontSize: '1.8rem'}}>Apply for Mentorship</h3>
-             <p style={{color: '#000', opacity: 0.8}}>Limited Q1 Availability.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* --- FINAL KINETIC CTA --- */}
-      <section className="cta-final animate-on-scroll" style={{padding: '200px 5%', textAlign: 'center'}}>
-          <h2 style={{fontSize: 'clamp(4rem, 15vw, 12rem)', letterSpacing: '-0.08em', lineHeight: '0.8'}}>READY TO<br />SCALE?</h2>
-          <button className="main-btn" style={{marginTop: '60px', padding: '30px 80px', fontSize: '1.2rem'}}>Book a Strategy Call</button>
+      {/* --- FINALE --- */}
+      <section className="zara-finale">
+        <motion.h2 
+          className="kinetic-text"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+        >
+          LET'S BUILD THE <br /> FUTURE.
+        </motion.h2>
+        <motion.button 
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="zara-btn primary"
+          style={{ padding: '20px 60px', fontSize: '1.2rem' }}
+        >
+          BOOK CONSULTATION
+        </motion.button>
       </section>
     </div>
   );
