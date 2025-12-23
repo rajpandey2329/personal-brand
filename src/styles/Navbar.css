@@ -1,0 +1,96 @@
+/* Navbar.css */
+:root {
+  --nav-bg: rgba(10, 10, 10, 0.8);
+  --accent-white: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --border-color: rgba(255, 255, 255, 0.08);
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 6%;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px); /* High-end frosted glass */
+  -webkit-backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+  cursor: pointer;
+  background: linear-gradient(135deg, #fff 0%, #a1a1a1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Closer gap for the highlight effect */
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  position: relative;
+}
+
+.nav-links a {
+  position: relative;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  transition: color 0.3s ease;
+  z-index: 1;
+}
+
+.nav-links a:hover {
+  color: #fff;
+}
+
+/* The Sliding Background Pill */
+.nav-highlight {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  z-index: -1;
+}
+
+/* Call to Action Button */
+.nav-cta {
+  background: var(--accent-white) !important;
+  color: #000 !important;
+  padding: 10px 24px !important;
+  border-radius: 100px;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  margin-left: 12px;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+}
+
+.nav-cta:hover {
+  background: #f0f0f0 !important;
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 12px 5%;
+  }
+  .nav-links {
+    display: none; /* Hide for mobile; implement a burger menu here if needed */
+  }
+}
